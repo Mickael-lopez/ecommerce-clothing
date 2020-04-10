@@ -10,8 +10,33 @@ const config = {
     storageBucket: "ecommerce-clothing-db-f0e46.appspot.com",
     messagingSenderId: "808861414098",
     appId: "1:808861414098:web:7ad2e74758cc334f7c330b"
-  };
+};
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if(!userAuth) return;
+    
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+    const snapShot = await userRef.get();
+
+    if(!snapShot.exists) {
+        const { displayName, email} = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            })
+        } catch (error) {
+            console.log('error creating user', error.message);
+        }
+    }
+
+    return userRef;
+}
 
 firebase.initializeApp(config);
 
