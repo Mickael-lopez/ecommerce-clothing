@@ -28,8 +28,8 @@ class SignUp extends React.Component {
             alert("passwords don't match");
             return;
         }
-        if(password.length < 6) {
-            alert("Your password need a least 6 characters");
+        if(password.length <= 6) {
+            alert("Your password needs a least 6 characters");
             return;
         }
         
